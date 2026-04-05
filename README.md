@@ -10,11 +10,13 @@
 [![Databricks](https://img.shields.io/badge/Databricks-Native-red.svg)](https://databricks.com/)
 [![Sarvam AI](https://img.shields.io/badge/Sarvam%20AI-India%20Built-green.svg)](https://sarvam.ai/)
 [![Tests](https://img.shields.io/badge/Tests-53%20passing-brightgreen.svg)](#testing)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#-license)
 
 **Built for the [BharatBricks Hackathon](https://bharatbricks.org) with Databricks**
 
-[Quick Start](#-quick-start) · [Architecture](#-architecture) · [Features](#-key-features) · [Demo](#-demo-scenarios) · [API Docs](docs/api_spec.md) · [Deployment](docs/deployment.md) · [Contributing](docs/CONTRIBUTING.md)
+### 🎬 [Watch the Demo Presentation](https://drive.google.com/file/d/1eNbwSAk4BDAAnUoTzonG4nUn3B5CrBD0/view?usp=sharing)
+
+[Quick Start](#-quick-start) · [Architecture](#-architecture) · [Features](#-key-features) · [Demo](#-demo-scenarios) · [API Docs](docs/api_spec.md) · [Deployment](docs/deployment.md)
 
 </div>
 
@@ -352,9 +354,7 @@ Asha_Sahayak/
 │   ├── api_spec.md             # Full API specification with examples
 │   ├── data_model.md           # Entity relationships + table schemas
 │   ├── deployment.md           # Step-by-step deployment guide
-│   ├── demo_runbook.md         # 6 demo scenarios with talking points
-│   ├── CONTRIBUTING.md         # Contribution guidelines
-│   └── SETUP.md                # Detailed development setup guide
+│   └── demo_runbook.md         # 6 demo scenarios with talking points
 │
 ├── config/
 │   ├── app_config.yaml         # Application configuration
@@ -363,7 +363,6 @@ Asha_Sahayak/
 ├── app.yaml                    # Databricks App entry point
 ├── databricks.yml              # Databricks Asset Bundle definition
 ├── requirements.txt            # Python dependencies (30 packages)
-├── LICENSE                     # MIT License
 └── README.md                   # This file
 ```
 
@@ -527,24 +526,12 @@ python -m tools.populate_production_db    # Load into database
 | [Data Model](docs/data_model.md) | Entity relationships, table schemas, RAG storage |
 | [Deployment Guide](docs/deployment.md) | Step-by-step Databricks + local deployment |
 | [Demo Runbook](docs/demo_runbook.md) | 6 interactive demo scenarios with talking points |
-| [Setup Guide](docs/SETUP.md) | Detailed development environment setup |
-| [Contributing](docs/CONTRIBUTING.md) | How to contribute to the project |
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines on:
-- Setting up your development environment
-- Code style and conventions
-- Writing tests
-- Submitting pull requests
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License**.
 
 ---
 
