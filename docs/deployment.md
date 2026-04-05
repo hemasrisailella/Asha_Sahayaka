@@ -1,5 +1,97 @@
 # Deployment Guide — ASHA Sahayak
 
+> Step-by-step guide for deploying ASHA Sahayak locally, on Databricks, or in any Python environment.
+
+---
+
+## Table of Contents
+
+- [Deployment Options](#deployment-options)
+- [Local Development Setup](#local-development-setup)
+- [Databricks Deployment — Method A: GitHub Repo](#method-a-github-repo--databricks-recommended)
+- [Databricks Deployment — Method B: CLI Bundle](#method-b-databricks-cli-bundle-deploy)
+- [Environment Variables](#environment-variables-reference)
+- [Verify Deployment](#verify-deployment)
+- [Production Checklist](#production-checklist)
+- [What Gets Uploaded](#what-gets-uploaded)
+- [Provider Configuration](#provider-configuration)
+- [Databricks Free Edition Limits](#databricks-free-edition-limits)
+- [Troubleshooting](#troubleshooting)
+
+---
+
+## Deployment Options
+
+| Method | Best For | Internet Required | API Keys Required |
+|--------|----------|-------------------|-------------------|
+| **Local (SQLite + Mock)** | Development, demo, testing | No | No |
+| **Local (SQLite + Sarvam)** | Full-featured demo | Yes (for Sarvam API) | Sarvam AI |
+| **Databricks (GitHub)** | Production, team, CI/CD | Yes | Sarvam AI (optional) |
+| **Databricks (CLI Bundle)** | Quick deploy from terminal | Yes | Sarvam AI (optional) |
+
+---
+
+## Local Development Setup
+
+### Prerequisites
+
+| Requirement | Version | Install |
+|-------------|---------|---------|
+| Python | 3.10+ | `brew install python` / `apt install python3` |
+| pip | Latest | Included with Python |
+| Tesseract OCR | 4.0+ (optional) | `apt install tesseract-ocr` / `brew install tesseract` |
+
+### Step 1: Clone & Install
+
+```bash
+git clone https://github.com/hemasrisailella/Asha_Sahayak.git
+cd Asha_Sahayak
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+# .venv\Scripts\activate    # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Step 2: Generate Data & Launch
+
+```bash
+# Generate synthetic data (30 patients, 82 observations, 12 facilities)
+python -m tools.generate_all
+
+# Launch the app
+python app/main.py
+```
+
+Open **http://localhost:8080**. The app auto-seeds from synthetic data on first run.
+
+### Step 3: Enable AI Providers (Optional)
+
+```bash
+cp .env.example .env
+# Edit .env with your Sarvam API key:
+#   SARVAM_API_KEY=your_key_here
+#   REASONING_PROVIDER=sarvam
+#   TRANSLATION_PROVIDER=sarvam
+#   SPEECH_PROVIDER=sarvam
+```
+
+Without API keys, mock providers simulate all AI features for demo purposes.
+
+### Step 4: Run Tests
+
+```bash
+pytest tests/ -v
+# Expected: 53 tests passing
+```
+
+---
+
+## Databricks Deployment
+
 There are **two ways** to deploy to Databricks:
 
 | Method | Best For | Needs |
@@ -281,3 +373,40 @@ The app auto-stops after 24 hours of inactivity on Free Edition. Restart from **
 ### "App stopped after 24 hours"
 - Free Edition limitation — restart from the Apps page
 - Data persists in the database file
+
+---
+
+## Environment Variables Reference
+
+| Variable | Default | Options | Description |
+|----------|---------|---------|-------------|
+| `SARVAM_API_KEY` | (unset) | API key string | Sarvam AI authentication |
+| `REASONING_PROVIDER` | `mock` | `sarvam`, `databricks`, `mock` | LLM provider for chat/reasoning |
+| `TRANSLATION_PROVIDER` | `mock` | `sarvam`, `mock` | Text translation provider |
+| `SPEECH_PROVIDER` | `mock` | `sarvam`, `mock` | Speech-to-text provider |
+| `VISION_PROVIDER` | `mock` | `pytesseract`, `sarvam`, `mock` | OCR/document extraction |
+| `EMBEDDING_PROVIDER` | `local` | `local`, `mock` | Text embedding for RAG |
+| `EMBEDDING_MODEL` | `intfloat/multilingual-e5-small` | Any sentence-transformers model | Embedding model name |
+| `DEMO_MODE` | `false` | `true`, `false` | Use synthetic data |
+| `DATABRICKS_HOST` | (unset) | URL | Databricks workspace URL |
+| `DATABRICKS_TOKEN` | (unset) | Token | Personal access token |
+| `WAREHOUSE_ID` | (unset) | ID string | SQL Warehouse ID |
+
+---
+
+## Production Checklist
+
+Before deploying to production:
+
+- [ ] **Security**: Set strong `SARVAM_API_KEY`, never commit `.env`
+- [ ] **Data**: Migrate from synthetic data to real patient data
+- [ ] **Database**: Move from SQLite to Delta Lake tables
+- [ ] **Vector Search**: Create Databricks Vector Search endpoint (replace FAISS)
+- [ ] **Authentication**: Configure Databricks App proxy authentication
+- [ ] **HTTPS**: Ensure all traffic is encrypted (default on Databricks)
+- [ ] **Consent**: Verify patient consent workflow before storing data
+- [ ] **Backup**: Configure Delta Lake time travel / backup schedule
+- [ ] **Monitoring**: Set up alerts for EMERGENCY risk evaluations
+- [ ] **Jobs**: Schedule daily_refresh and weekly_summary as Databricks Workflows
+- [ ] **Testing**: Run `pytest tests/ -v` and verify all 53 tests pass
+- [ ] **Audit**: Verify audit_log is capturing all actions
