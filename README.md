@@ -16,7 +16,7 @@
 
 ### 🎬 [Watch the Demo Video](https://youtu.be/4LIVb--1QHM)
 
-![Sample View](docs/assets/sampleview.jpeg)
+![Sample View](docs/assets/sample_view.jpeg)
 
 [Quick Start](#-quick-start) · [Architecture](#-architecture) · [Features](#-key-features) · [Demo](#-demo-scenarios) · [API Docs](docs/api_spec.md) · [Deployment](docs/deployment.md)
 
